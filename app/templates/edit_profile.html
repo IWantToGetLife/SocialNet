@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Редактирование профиля
+{% endblock %}
+
+{% block body %}
+<form method="POST">
+    <div class="form-group">
+        <label for="about">Обновление статуса</label>
+        <input type="text" class="form-control" id="about" name="about" placeholder="Введите статус">
+    </div>
+<button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}
