@@ -11,11 +11,23 @@
 {% if user.here_since %} <h5>На сайте с: {{ user.here_since }}</h5> {% endif %}
 {% if user == current_user %}
 
-{% for task in tasks %}
-<h5>test</h5>
-{% endfor %}
-
-<a href="/add_task" class="btn btn-outline-primary">Добавить задание</a>
 <a href="/edit_profile" class="btn btn-outline-primary">Изменить профиль</a>
 {% endif %}
+
+    <div class="container">
+        <h2>Задания</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="task">Добавление задания</label>
+                <input type="text" class="form-control" id="task" name="task" placeholder="Что хотите сделать?">
+            </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+
+        {% for todo in todo_list %}
+            <p> {{ todo.id }} | {{ todo.name }}{
+                <a href="/delete/{{ todo.id }}">Удалить</a></p>
+        {% endfor %}
+    </div>
+
 {% endblock %}

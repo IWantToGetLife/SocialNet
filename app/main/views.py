@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from app.models import User
+from app.models import User, Task
 from app import db
 from flask_login import current_user, login_required
 from datetime import datetime
@@ -33,11 +33,27 @@ def user_delete(id):
         return redirect('/users')
 
 
-@views.route('/user/<name>')
+@views.route('/user/<name>', methods=['POST', 'GET'])
 @login_required
 def user_profile(name):
+    todo_list = Task.query.all()
     username = User.query.filter_by(name=name).first_or_404()
-    return render_template('user.html', user=username)
+    if request.method == 'POST':
+        name = request.form.get('task')
+        new_todo = Task(name=name, complete=False, user_id=username.id)
+        todo_list = Task.query.all()
+        db.session.add(new_todo)
+        db.session.commit()
+        todo_list = Task.query.all()
+    return render_template('user.html', user=username, todo_list=todo_list)
+
+
+@views.route('/user/<int:id>')
+def delete():
+    task = Task.query.filter_by(id=id).first()
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('/'))
 
 
 @views.route('/edit_profile', methods=['POST', 'GET'])
@@ -50,14 +66,6 @@ def edit_profile():
         flash('Статус успешно обновлён!', category='success')
         return redirect(url_for('views.user_profile', name=current_user.name))
     return render_template('edit_profile.html', user=current_user)
-
-
-@views.route('/add_task', methods=['POST', 'GET'])
-@login_required
-def add_task():
-    pass
-    return render_template('add_task.html', user=current_user)
-
 
 @views.before_request
 def before_req():
