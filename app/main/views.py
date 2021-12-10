@@ -52,6 +52,13 @@ def edit_profile():
     return render_template('edit_profile.html', user=current_user)
 
 
+@views.route('/add_task', methods=['POST', 'GET'])
+@login_required
+def add_task():
+    pass
+    return render_template('add_task.html', user=current_user)
+
+
 @views.before_request
 def before_req():
     if current_user.is_authenticated:

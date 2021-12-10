@@ -3,6 +3,7 @@ from app.models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from flask_login import login_user, login_required, logout_user, current_user
+from datetime import datetime
 
 
 auth = Blueprint('auth', __name__)
@@ -33,6 +34,7 @@ def sign_up():
         name = request.form.get('nickname')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        date = datetime.now()
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -44,10 +46,9 @@ def sign_up():
         elif password1 != password2:
             flash("Пароли не совпадают!", category='error')
         else:
-            new_user = User(email=email, name=name, password=generate_password_hash(password1, method='sha256'))
+            new_user = User(email=email, name=name, password=generate_password_hash(password1, method='sha256'), here_since = date)
             db.session.add(new_user)
             db.session.commit()
-            login_user(user, remember=True)
             flash("Аккаунт успешно зарегистрирован!", category='success')
             return redirect(url_for('auth.login'))
     return render_template("auth/sign_up.html", user=current_user)

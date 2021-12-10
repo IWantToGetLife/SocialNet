@@ -11,6 +11,16 @@ class User(db.Model, UserMixin):
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_login = db.Column(db.DateTime, default=datetime.utcnow)
+    here_since = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_json(self):
+        json_user = {
+            'id': self.id,
+            'username': self.name,
+            'last_login': self.last_login,
+            'about_me': self.about_me
+        }
+        return json_user
 
 
 class Task(db.Model):

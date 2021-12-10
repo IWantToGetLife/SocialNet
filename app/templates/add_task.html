@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ой.. А это не реализовано
+{% endblock %}
+
+{% block body %}
+<form method="POST">
+    <div class="form-group">
+        <label for="task">Добавить задание</label>
+        <input type="text" class="form-control" id="task" name="task" placeholder="Какое задание вы хотите добавить?">
+    </div>
+<button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}

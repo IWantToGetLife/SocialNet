@@ -28,6 +28,7 @@ def create_app():
     create_db(app)
 
     login = LoginManager(app)
+    login.login_message = u"Необходимо войти в аккаунт для просмотра страницы!"
     login.login_view = 'auth.login'
     login.init_app(app)
 
